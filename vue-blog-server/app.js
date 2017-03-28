@@ -7,11 +7,11 @@ var bodyParser = require('body-parser');
 
 //mongoose
 var mongoose = require('mongoose');
-const mongoUri = 'mongodb:/localhost:27017/blog';
+const mongoUri = 'mongodb://localhost:27017/blog';
 mongoose.connect(mongoUri, { server:{ socketOptions: { keepAlive: 1 } } });
 mongoose.connection.on('error', ()=>{
   throw new Error(`unable to connect to database`);
-})
+});
 
 var index = require('./routes/index');
 var users = require('./routes/users');
