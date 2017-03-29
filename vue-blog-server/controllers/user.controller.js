@@ -16,3 +16,11 @@ exports.create = function(req,res,next){
         // })
     
 };
+
+//获取
+exports.getall = function(req, res, next){
+    User.find()
+        .then(data=>{
+            res.json(data);
+        })
+}

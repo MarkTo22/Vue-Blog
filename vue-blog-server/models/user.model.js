@@ -2,11 +2,12 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;//利用mongoose下Schema模型
 
 var UserSchema = new Schema({
-  username:  String,
-  email: String,
+  name:  String,
+  password: String,
+  mail: String,
   city:String,
-  birdthday: { type: Date},
-  gender:Number,
+  birthday: { type: Date},
+  gender:String,
   hobby:[],
   brief:String
 });

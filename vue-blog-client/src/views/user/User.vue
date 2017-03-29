@@ -1,6 +1,7 @@
 <template>
     <div>
     <div class="btns">
+        <Button type="error" @click="getData">axios测试</Button>
         <Button type="info" @click="modal1 = true">添加用户</Button>
         <Button type="error">删除用户</Button>
         <Input icon="search" placeholder="请输入..." style="width: 200px"></Input>
@@ -20,6 +21,9 @@
         <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
         <Form-item label="姓名" prop="name">
             <Input v-model="formValidate.name" placeholder="请输入姓名"></Input>
+        </Form-item>
+        <Form-item label="密码" prop="password">
+            <Input v-model="formValidate.password" placeholder="请输入密码"></Input>
         </Form-item>
         <Form-item label="邮箱" prop="mail">
             <Input v-model="formValidate.mail" placeholder="请输入邮箱"></Input>
@@ -70,7 +74,7 @@
     </Form>
     </Modal>
     <!--table表格-->
-    <Table border :context="self" :columns="columns7" :data="data6"></Table>
+    <Table border :context="self" :columns="columns7" :data="list"></Table>
     <!--分页-->
     <div style="margin: 10px;overflow: hidden">
         <div style="float: right;">
@@ -80,25 +84,35 @@
     </div>
 </template>
 <script>
+    //import axios from 'axios'//引入VueAxios,不需要这步
+
     export default {
         data () {
             return {
+                // 添加用户控制
+                modal1:false,
+                list:[],
+                self: this,
                 // 按钮添加表单
                 formValidate: {
-                    name: '',
-                    mail: '',
-                    city: '',
-                    gender: '',
-                    interest: [],
+                    name: '11',
+                    password:'111',
+                    mail: '1@1.com',
+                    city: 'shenzhen',
+                    gender: 'male',
+                    interest: ['吃饭','睡觉'],
                     date: '',
                     // time: '',
-                    desc: ''
+                    desc: '11111111111111111111111111'
                 },
                 ruleValidate: {
                     name: [
                         { required: true, message: '姓名不能为空', trigger: 'blur' }
                     ],
-                    mail: [
+                    password: [
+                        { required: true, message: '密码不能为空', trigger: 'blur' }
+                    ],
+                    email: [
                         { required: true, message: '邮箱不能为空', trigger: 'blur' },
                         { type: 'email', message: '邮箱格式不正确', trigger: 'blur' }
                     ],
@@ -123,9 +137,7 @@
                         { type: 'string', min: 20, message: '介绍不能少于20字', trigger: 'blur' }
                     ]
                 },
-                // 添加用户控制
-                modal1:false,
-                self: this,
+                
                 columns7: [
                     {
                         type: 'selection',
@@ -187,11 +199,11 @@
             show (index) {
                 this.$Modal.info({
                     title: '用户信息',
-                    content: `姓名：${this.data6[index].name}<br>年龄：${this.data6[index].age}<br>地址：${this.data6[index].address}`
+                    content: `姓名：${this.list[index].name}<br>年龄：${this.list[index].age}<br>地址：${this.list[index].address}`
                 })
             },
             remove (index) {
-                this.data6.splice(index, 1);
+                this.list.splice(index, 1);
             },
             update (index) {
                 
@@ -208,9 +220,22 @@
             // },
             // 添加按钮+表单
             handleSubmit (name) {
+                var _this = this;
+
                 this.$refs[name].validate((valid) => {
                     if (valid) {
-                        this.$Message.success('提交成功!');
+
+                        //console.log(_this.formValidate)
+                        _this.$http.post('http://localhost:3000/users/data', _this.formValidate)
+                        .then(function (response) {
+                            console.log(response);
+                            _this.$Message.success('提交成功!');
+                            _this.modal1 = false;
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+
                     } else {
                         this.$Message.error('表单验证失败!');
                     }
@@ -218,8 +243,19 @@
             },
             handleReset (name) {
                 this.$refs[name].resetFields();
+            },
+            getData () {
+                // console.log(this.$http)
+                var _this = this;
+                this.$http.get('http://localhost:3000/users').then(function(res){
+                    console.log(JSON.stringify(res.data));
+                    _this.list = res.data;
+                })
             }
 
+        },
+        created() {
+            this.getData();
         }
     }
 </script>

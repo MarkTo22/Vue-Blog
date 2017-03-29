@@ -1,4 +1,6 @@
 var express = require('express');
+var cors = require('cors');//引入cors解决跨域
+
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -13,10 +15,21 @@ mongoose.connection.on('error', ()=>{
   throw new Error(`unable to connect to database`);
 });
 
+//解决跨域方案
+// app.all('*', function(req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
+//     res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+//     res.header("X-Powered-By",' 3.2.1');
+//     next();
+// });
+
 var index = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+//app.options('*', cors())
+app.use(cors())//使用cors
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
