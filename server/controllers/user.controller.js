@@ -27,10 +27,16 @@ exports.create = function (req, res, next) {
 
 
 exports.update = function (req, res, next) {
-  const user = new User(req.body);
+  // const user = new User(req.body);
+  const user = req.body;
   const id = req.params.id;
+  delete user._id;
 
-  User.findByIdAndUpdate(id, { $set: req.body }, { new: false })
+  // User.update({id:id},user,function(err,data){
+  //   console.log("user.controller:"+data);
+  // })
+
+  User.findByIdAndUpdate(id, user, { new: false })
     .then((user) => {
       res.send({ user });
     })
