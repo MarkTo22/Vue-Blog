@@ -16,6 +16,7 @@
        <!--上传控件iview-->
        <Upload
         type="drag"
+        multiple
         action="http://localhost:3000/uploads/filedata"
         name="avatar"
         :max-size="2048"

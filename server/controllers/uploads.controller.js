@@ -25,7 +25,7 @@ exports.filedata = function(req,res,next){
       callback(null, true)
     }
   })
-  .single('avatar');
+  .array('avatar',1);//single传一个，array传多个,同时客户端需要添加multiple属性
   upload(req, res, function (err){
     res.end('File is uploaded');
   })
