@@ -8,5 +8,6 @@ router.put('/data/:id', dataCtrl.update); // 修改
 router.post('/data', dataCtrl.create); // 执行控制器中的create方法
 router.post('/removes', dataCtrl.removes); // 执行控制器中的create方法
 router.post('/list', dataCtrl.list); // 执行控制器中的create方法
+router.post('/filedata', dataCtrl.filedata);
 
 module.exports = router;

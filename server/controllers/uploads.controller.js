@@ -1,6 +1,35 @@
 const mongoose = require('mongoose');
 const Uploads = require('../models/uploads.model')
 var path = require('path')
+var multer = require('multer')//上传模块--nodejs-express
+
+var storage = multer.diskStorage({ //存储
+  destination: function (req, file, cb) {
+    cb(null, './uploads')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+  }
+})
+
+// var upload = multer({ storage: storage });
+
+exports.filedata = function(req,res,next){
+  var upload = multer({
+    storage:storage,
+    fileFilter:function (req, file, callback){
+      var ext = path.extname(file.originalname)
+      if (ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg') {
+        return callback(res.end('Only images are allowed'), null)
+      }
+      callback(null, true)
+    }
+  })
+  .single('avatar');
+  upload(req, res, function (err){
+    res.end('File is uploaded');
+  })
+}
 
 exports.create = function (req, res, next) {
   const uploads = new Uploads(req.body);
