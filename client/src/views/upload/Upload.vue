@@ -13,7 +13,12 @@
 
        <Button type="primary" @click="uploadImage">上传图片</Button>
 
-       <!--上传控件iview-->
+       <!--iview-Tree树形控件-->
+       <Tree :data="baseData" show-checkbox @on-select-change="selectChange"></Tree>
+
+          <Button type="primary" @click="getTreeData">获取Tree</Button>
+
+       <!--上传控件iview-Upload-->
        <Upload
         type="drag"
         multiple
@@ -44,6 +49,28 @@
   
     data() {
       return {
+        baseData: [{
+            expand: true,
+            title: 'parent 1',
+            children: [{
+                title: 'parent 1-0',
+                expand: true,
+                disabled: true,
+                children: [{
+                    title: 'leaf',
+                    disableCheckbox: true
+                }, {
+                    title: 'leaf',
+                }]
+            }, {
+                title: 'parent 1-1',
+                expand: true,
+                checked: true,
+                children: [{
+                    title: '<span style="color: red">leaf</span>',
+                }]
+            }]
+        }],
         file:{
           lastModified:'',
           name:'',
@@ -56,6 +83,16 @@
     },
   
     methods: {
+      getTreeData () {//按钮获取Tree结构
+        var _this = this;
+        _this.$http.get('http://localhost:3000/cate').then(res=>{
+          console.log(res);
+          _this.baseData = res.data;
+        })
+      },
+      selectChange (node) {
+        console.log(node);
+      },
       handleSuccess (res, file) {
           // 因为上传过程为实例，这里模拟添加 url
           file.url = 'https://o5wwk8baw.qnssl.com/7eb99afb9d5f317c912f08b5212fd69a/avatar';
