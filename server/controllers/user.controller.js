@@ -15,7 +15,7 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage })
 
 
-// 新建用户
+// 新建新用户信息
 exports.create = function (req, res, next) {
   const user = new User(req.body);
 
@@ -23,6 +23,14 @@ exports.create = function (req, res, next) {
     .then(data => {
       res.json(data)
     })
+};
+
+// login
+exports.login = function (req, res, next) {
+  console.log({ "name":req.body.name, "password":req.body.password })
+  User.findOne({ "name":req.body.name,"password":req.body.password }, function(err,data){
+    res.json(data);
+  })
 };
 
 

@@ -12,12 +12,12 @@ export const store = new Vuex.Store({
       return state.login
     }
   },
-  mutations: {
+  mutations: {//同步
     checkLogin: (state, payload) => {
       state.login = payload;
     }
   },
-  actions: {
+  actions: {//异步
     checkLogin: ({ commit }, payload) => {
       commit('checkLogin', payload);
     }

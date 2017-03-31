@@ -13,12 +13,12 @@
                 </Row>
             </div>
             <footerbar></footerbar>
-</template>
+        </template>
 
 <template v-else>
     <Form ref="formInline" :model="formInline" :rules="ruleInline" inline>
-        <Form-item prop="user">
-            <Input type="text" v-model="formInline.user" placeholder="Username">
+        <Form-item prop="name">
+            <Input type="text" v-model="formInline.name" placeholder="Username">
             <Icon type="ios-person-outline" slot="prepend"></Icon>
             </Input>
         </Form-item>
@@ -42,16 +42,17 @@
     import {
         mapGetters,mapActions
     } from 'vuex'
+    var CryptoJS = require('crypto-js');
     
     export default {
         data() {
             return {
                 formInline: {
-                    user: '',
-                    password: ''
+                    name: '1',
+                    password: '111111'
                 },
                 ruleInline: {
-                    user: [{
+                    name: [{
                         required: true,
                         message: '请填写用户名',
                         trigger: 'blur'
@@ -68,18 +69,29 @@
                             trigger: 'blur'
                         }
                     ]
-                }
+                }//end_ruleInline
             }
         },
         methods: {
             ...mapActions([
                 'checkLogin'
             ]),
-            handleSubmit(name) {
-                this.$refs[name].validate((valid) => {
+            handleSubmit(name) {//登录按钮事件
+                let _this = this;
+                this.formInline.password = CryptoJS.MD5(_this.formInline.password, { asString: true}).toString();
+                // console.log(this.formInline);
+                this.$refs[name].validate((valid) => {//ajax-login请求
                     if (valid) {
-                        this.checkLogin(true);
-                        this.$Message.success('提交成功!');
+                        _this.$http.post('http://localhost:3000/users/login',_this.formInline).then(res=>{
+                            console.log(res);
+                            if(res.data){
+                                this.checkLogin(true);
+                            }else{
+                                this.$Message.error('用户名或密码错误!');//服务器端配置user.controller--login+users.js的router
+                            }
+                        })
+
+                        
                     } else {
                         this.$Message.error('表单验证失败!');
                     }
