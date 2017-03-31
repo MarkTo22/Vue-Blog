@@ -17,6 +17,8 @@
        <Tree :data="baseData" show-checkbox @on-select-change="selectChange"></Tree>
 
           <Button type="primary" @click="getTreeData">获取Tree</Button>
+          <Button type="primary" @click="getTreeData">添加根节点</Button>
+          <Button type="primary" @click="getTreeData">添加子节点</Button>
 
        <!--上传控件iview-Upload-->
        <Upload
