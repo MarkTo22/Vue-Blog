@@ -10,7 +10,10 @@ A preliminary estimate, it can support 5 million the amount of data.
       //npm install
       
 ## Run
-  ### Development
+  ### Setting
+     Base on 'Nodejs' / 'mongodb' / 'supervisor' / 'express'
+     U should install the Nodejs/Mongodb,and then run the mongod,start the server and client to beginning thie pro.
+  ### Development
 
       // For the first time, run init to create dependency modules
      xxx/clien-----> npm install----> npm run dev
