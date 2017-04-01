@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-      <h2>上传文件</h2>
+      <h2>上传文件到数据库</h2>
       <vue-base64-file-upload 
         class="v1"
         accept="image/png,image/jpeg"
@@ -141,7 +141,7 @@
                data: {name:_this.file.name,data:_this.file.data}
              })
              .then(function (response) {
-              console.log(response)
+              // console.log(response);
              })
 
       },

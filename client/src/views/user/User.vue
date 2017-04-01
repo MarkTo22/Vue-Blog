@@ -7,12 +7,13 @@
       <Button type="ghost" @click="search">搜索数据</Button>
   </div>
 
+  <!--添加用户按钮-触发对话框-->
   <Modal
         v-model="modal1"
-        title="普通的Modal对话框标题"
+        title="添加新用户"
   >
         <div slot="footer">
-            Tip:本模块是用户添加及修改模块!
+            Tip:请仔细核对添加用户信息!
         </div>
          
         <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
@@ -57,7 +58,15 @@
               </Checkbox-group>
           </Form-item>
           <Form-item label="介绍" prop="desc">
-              <Input v-model="formValidate.desc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入..."></Input>
+              <!--<Input v-model="formValidate.desc" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入..."></Input>-->
+              <!--编辑器quill-editor-->
+              <quill-editor v-model="formValidate.desc"
+                            ref="myQuillEditor"
+                            type="textarea"
+                            :autosize="{minRows: 3,maxRows: 6}"
+                            placeholder="请输入..."
+                            >
+              </quill-editor>
           </Form-item>
           <Form-item>
               <Button type="primary" @click="handleSubmit('formValidate')">提交</Button>
@@ -66,6 +75,10 @@
       </Form>
 
     </Modal>
+<!--Ueditor编辑器-->
+<!--<VueUEditor @ready="editorReady" ueditorPath="/static/ueditor/"></VueUEditor>-->
+
+
   <Table border :context="self" :columns="columns" :data="list" @on-selection-change="handlerSelectionChange"></Table>
 
 
@@ -83,11 +96,29 @@
 
 <script>
     import Base from '../../common/Base.js'
+    // import VueUEditor from 'vue-ueditor'
+    import { quillEditor } from 'vue-quill-editor'
 
     export default {
         mixins:[Base],
+        // components:{
+        //     VueUEditor:VueUEditor
+        // },
+        components: {
+            quillEditor
+        },
+        methods:{
+            //UEditor---method
+            // editorReady(editorInstance){
+            //     editorInstance.setContent('Hello World!');
+            //     editorInstance.addListener('contentChange',()=>{
+            //         console.log('内容发生变化...');
+            //     });                
+            // }
+        },
         data () {
             return {
+                // content:'<h2>Example...</h2>',
                 module:'users',
                 formValidate: {
                     _id: null,
@@ -160,8 +191,8 @@
                         }
                     }
                 ]
-            }
-        }
+            }//end_return
+        }//end_data
     }
 </script>
 

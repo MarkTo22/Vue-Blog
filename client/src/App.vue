@@ -1,5 +1,8 @@
 <template>
     <div class="layout">
+        <!--进度条控件-->
+        <nprogress-container></nprogress-container>
+        <!--登录状态-->
         <template v-if="login">
             <headerbar></headerbar>
             <div class="layout-content">
@@ -14,31 +17,32 @@
             </div>
             <footerbar></footerbar>
         </template>
-
-<template v-else>
-    <Form ref="formInline" :model="formInline" :rules="ruleInline" inline>
-        <Form-item prop="name">
-            <Input type="text" v-model="formInline.name" placeholder="Username">
-            <Icon type="ios-person-outline" slot="prepend"></Icon>
-            </Input>
-        </Form-item>
-        <Form-item prop="password">
-            <Input type="password" v-model="formInline.password" placeholder="Password">
-            <Icon type="ios-locked-outline" slot="prepend"></Icon>
-            </Input>
-        </Form-item>
-        <Form-item>
-            <Button type="primary" @click="handleSubmit('formInline')">登录</Button>
-        </Form-item>
-    </Form>
-</template>
-    </div>
-</template>
+        <!--非登陆状态-->
+        <template v-else>
+            <Form ref="formInline" :model="formInline" :rules="ruleInline" style="width:200px;height:100%;text-align:center;margin:50px auto;">
+                <Form-item prop="name">
+                    <Input type="text" v-model="formInline.name" placeholder="Username">
+                    <Icon type="ios-person-outline" slot="prepend"></Icon>
+                    </Input>
+                </Form-item>
+                <Form-item prop="password">
+                    <Input type="password" v-model="formInline.password" placeholder="Password">
+                    <Icon type="ios-locked-outline" slot="prepend"></Icon>
+                    </Input>
+                </Form-item>
+                <Form-item>
+                    <Button type="primary" @click="handleSubmit('formInline')">登录</Button>
+                </Form-item>
+            </Form>
+        </template>
+            </div>
+        </template>
 
 <script>
     import Headerbar from './components/layout/Headerbar.vue'
     import Footerbar from './components/layout/Footerbar.vue'
     import Asidebar from './components/layout/Asidebar.vue'
+    import NprogressContainer from 'vue-nprogress/src/NprogressContainer.vue'
     import {
         mapGetters,mapActions
     } from 'vuex'
@@ -47,9 +51,10 @@
     export default {
         data() {
             return {
+                idd:'xxx',
                 formInline: {
                     name: '1',
-                    password: '111111'
+                    password: '1'
                 },
                 ruleInline: {
                     name: [{
@@ -71,7 +76,7 @@
                     ]
                 }//end_ruleInline
             }
-        },
+        },//end_data
         methods: {
             ...mapActions([
                 'checkLogin'
@@ -83,9 +88,14 @@
                 this.$refs[name].validate((valid) => {//ajax-login请求
                     if (valid) {
                         _this.$http.post('http://localhost:3000/users/login',_this.formInline).then(res=>{
-                            console.log(res);
+                            // console.log(res);
                             if(res.data){
                                 this.checkLogin(true);
+                                // _this.setData({
+                                //     id:_this.formInline.name
+                                // })
+                                _this.idd = _this.formInline.name;
+                                console.log(_this.idd);
                             }else{
                                 this.$Message.error('用户名或密码错误!');//服务器端配置user.controller--login+users.js的router
                             }
@@ -101,7 +111,8 @@
         components: {
             Headerbar,
             Footerbar,
-            Asidebar
+            Asidebar,
+            NprogressContainer
         },
         computed: mapGetters({
             login: 'login'
@@ -111,6 +122,7 @@
 
 <style scoped>
     .layout {
+        height:100%;
         border: 1px solid #d7dde4;
         background: #f5f7f9;
     }

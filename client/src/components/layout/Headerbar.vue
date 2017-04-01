@@ -1,7 +1,7 @@
 <template>
   <div>
     <Menu mode="horizontal" theme="dark" active-name="1">
-        <div class="layout-logo"></div>
+        <div class="layout-logo"><h3>后台管理平台</h3></div>
         <div class="layout-nav">
             <Menu-item name="1">
                 <Icon type="ios-navigate"></Icon>
@@ -55,7 +55,7 @@
 
 <style scoped>
     .active{
-        color:white;
+        color:orange;
     }
     .layout-logo{
         width: 100px;
@@ -66,6 +66,10 @@
         position: relative;
         top: 15px;
         left: 20px;
+    }
+    .layout-logo h3{
+        color:orange;
+        line-height:30px;        
     }
     .layout-nav{
         width: 620px;
